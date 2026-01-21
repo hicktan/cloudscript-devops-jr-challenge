@@ -73,3 +73,18 @@ Clone este repositório, acesse o diretório raiz e siga os passos abaixo no ter
    ```bash
    terraform destroy -auto-approve
    ```
+## Custo estimado
+ Para uma visualização aproximada dos custos gerados pela infraestrutura implementada, utilizei o AWS Calculator. </br>
+**Estimativa de $0.24/hora.**
+
+Link da estimativa: https://calculator.aws/#/estimate?id=01c9324f4a9eebd5d08ebf31efdf712cb695be91
+![alt text](assets/estimativa.png)
+
+Incluído no cálculo:
+- Amazon EKS Cluster (1 unidade)
+
+- EC2 Instances (2x t3.medium, Linux, On-Demand)
+
+- NAT Gateway (1 unidade, ~730 horas se fosse mês cheio + processamento de dados estimado de 10GB)
+
+- EBS Storage (O disco das EC2, geralmente 20GB gp3 por nó).
