@@ -1,11 +1,11 @@
 output "cluster_name" {
   description = "Nome do Cluster Kubernetes criado"
-  value = module.eks.cluster_name
+  value       = module.eks.cluster_name
 }
 
 output "cluster_region" {
   description = "Região onde será criado o Cluster"
-  value = var.aws_region
+  value       = var.aws_region
 }
 
 output "cluster_security_group_id" {
