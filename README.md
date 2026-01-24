@@ -1,4 +1,4 @@
-# Desafio CloudScript
+# Desafio Cluster EKS
 
 ## Introdução
 Este projeto apresenta uma implementação de infraestrutura em nuvem na AWS, composta por uma **VPC customizada** e um **Cluster EKS funcional**. A solução foi desenvolvida utilizando **Terraform** seguindo práticas de Infraestrutura como Código (IaC).
@@ -61,18 +61,49 @@ Clone este repositório, acesse o diretório raiz e siga os passos abaixo no ter
    aws eks update-kubeconfig --region us-east-1 --name eks-desafio-devops
    ```
 ![comando aws](assets/image1.png)
-1.Configuração do kubectl. </br>
+1. Configuração do kubectl. </br>
 </br>
 ![kubectl](assets/image2.png)
-2.Vizualiação dos nodes </br>
+2. Vizualiação dos nodes </br>
 </br>
 ![teste ping](assets/ping.png) 
-3.Teste de ping dentro do pod. </br>
+3. Teste de ping dentro do pod. </br>
 </br>
-5. **Limpeza do Ambiente:** Ao finalizar os testes, destrua a infraestrutura para evitar cobranças:
+4. **Limpeza do Ambiente:** Ao finalizar os testes, destrua a infraestrutura para evitar cobranças:
    ```bash
    terraform destroy -auto-approve
    ```
+## Monitoramento e Observabilidade
+
+Implementação de monitoramento no cluster **EKS** utilizando **Prometheus + Grafana**. Provisionado através de código com Terraform. Utilizei o provider do **Helm** (gerenciador de pacotes Kubernetes).
+### Implementação
+
+Certificando de possuir todos os arquivos `.tf`, siga com a infraestrutura criada para acessar o painel do Grafana.
+
+1. Atualize o **Kubeconfig**:
+   ```
+   aws eks update-kubeconfig --region us-east-1 --name eks-desafio-devops
+   ```
+2. Verifique o status dos pods de monitoramento:
+
+   ```
+   kubectl get pods -n monitoring
+   ```
+3. Acesse o Grafana **(Túnel)**:
+   ```
+   kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+   ```
+4. Acesse a URL `localhost:3000`
+
+5. Logue com `admin`/`admin123`(definido no arquivo `monitoring.tf`):
+![login](assets/login.png)
+
+### Visualização
+No menu lateral, vá em Dashboard. Escolha um recurso para visualizar o comportamento. Neste exemplo mostra o `Node Exporter/Nodes`:
+
+![dashboard](assets/dashboard.png)
+<h5> Nota: Caso os gráficos apareçam vazios ("No Data"), altere o intervalo de tempo no canto superior direito do Grafana para 'Last 5 minutes'.</h5>
+
 ## Custo estimado
  Para uma visualização aproximada dos custos gerados pela infraestrutura implementada, utilizei o AWS Calculator. </br>
 **Estimativa de $0.24/hora.**
@@ -88,3 +119,8 @@ Incluído no cálculo:
 - NAT Gateway (1 unidade, ~730 horas se fosse mês cheio + processamento de dados estimado de 10GB)
 
 - EBS Storage (O disco das EC2, geralmente 20GB gp3 por nó).
+
+
+
+
+
